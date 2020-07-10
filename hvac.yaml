@@ -1,0 +1,211 @@
+input_boolean:
+  button_boost_master:
+    name: Button boost - master
+    initial: false
+    icon: mdi:radiator
+  heating_boost:
+    name: Boost heating or cooling
+    initial: false
+    icon: mdi:radiator
+  heating_boost_master:
+    name: Boost heating or cooling master active
+    initial: false
+    icon: mdi:radiator
+  heating_boost_main:
+    name: Boost heating or cooling main active
+    initial: false
+    icon: mdi:radiator
+  heating_boost_upstairs:
+    name: Boost heating or cooling upstairs active
+    initial: false
+    icon: mdi:radiator
+  heating_mode:
+    name: Heat mode for climate control
+    initial: true
+    icon: mdi:radiator
+  heating_boost_automation:
+    name: Boost heating or cooling automation
+    initial: true
+    icon: mdi:fire
+
+input_number:
+  hour_select:
+    name: Hour
+    initial: 1
+    min: 0
+    max: 5
+    step: 0.25
+  cool_boost_temp:
+    name: cool boost temp
+    initial: 72
+    min: 60
+    max: 84
+  cool_default_main_temp:
+    name: cool main temp
+    initial: 75
+    min: 60
+    max: 84
+  cool_default_master_temp:
+    name: cool master temp
+    initial: 74
+    min: 60
+    max: 84
+  cool_default_upstairs_temp:
+    name: cool upstairs temp
+    initial: 75
+    min: 60
+    max: 84
+  cool_evening_main_temp:
+    name: cool evening main temp
+    initial: 75
+    min: 60
+    max: 84
+  cool_evening_master_temp:
+    name: cool evening master temp
+    initial: 74
+    min: 60
+    max: 84
+  cool_evening_upstairs_temp:
+    name: cool evening upstairs temp
+    initial: 76
+    min: 60
+    max: 84
+  cool_overnight_main_temp:
+    name: cool main temp
+    initial: 77
+    min: 60
+    max: 84
+  cool_overnight_master_temp:
+    name: cool master temp
+    initial: 76
+    min: 60
+    max: 84
+  cool_overnight_upstairs_temp:
+    name: cool upstairs temp
+    initial: 78
+    min: 60
+    max: 84
+  cool_default_overnight_temp:
+    name: cool night temp
+    initial: 76
+    min: 60
+    max: 84
+  cool_default_empty_temp:
+    name: cool empty house temp
+    initial: 77
+    min: 60
+    max: 84
+  heat_boost_temp:
+    name: heat boost temp
+    initial: 74
+    min: 60
+    max: 84
+  heat_default_main_temp:
+    name: heat main temp
+    initial: 72
+    min: 60
+    max: 80
+  heat_default_master_temp:
+    name: heat master temp
+    initial: 72
+    min: 60
+    max: 80
+  heat_default_upstairs_temp:
+    name: heat upstairs temp
+    initial: 68
+    min: 60
+    max: 80
+  heat_evening_main_temp:
+    name: heat evening main temp
+    initial: 72
+    min: 60
+    max: 80
+  heat_evening_master_temp:
+    name: heat evening master temp
+    initial: 72
+    min: 60
+    max: 80
+  heat_evening_upstairs_temp:
+    name: heat evening upstairs temp
+    initial: 68
+    min: 60
+    max: 80
+  heat_overnight_main_temp:
+    name: heat overnight main temp
+    initial: 64
+    min: 60
+    max: 80
+  heat_overnight_master_temp:
+    name: heat overnight master temp
+    initial: 66
+    min: 60
+    max: 80
+  heat_overnight_upstairs_temp:
+    name: heat overnight upstairs temp
+    initial: 64
+    min: 60
+    max: 80
+  heat_default_overnight_temp:
+    name: heat night temp
+    initial: 64
+    min: 60
+    max: 80
+  heat_default_empty_temp:
+    name: heat empty house temp
+    initial: 64
+    min: 60
+    max: 80
+  vacation_max_temp:
+    name: Vacation high temp
+    initial: 80
+    min: 60
+    max: 80
+  vacation_min_temp:
+    name: Vacation low temp
+    initial: 61
+    min: 60
+    max: 80
+
+input_select:
+  heating_room:
+    name: Which area to heat
+    options:
+      - Main 
+      - Master
+      - Upstairs
+    initial: Main
+    icon: mdi:radiator
+  hvac_option:
+    name: Which mode to use
+    options:
+      - Auto
+      - Eco
+      - Off
+      - On
+      - Vacation
+    initial: Auto
+    icon: mdi:fan
+  hvac_mode:
+    name: Which mode to use
+    options:
+      - cool
+      - heat
+      - off
+    initial: heat
+    icon: mdi:fan
+
+sensor:
+  - platform: template
+    sensors:
+      end_time:
+        friendly_name: 'End Time'
+        value_template: "{{ (now().strftime('%s') | int + (float(states('input_number.hour_select'))*60*60)) | timestamp_custom('%H:%M', false) }}"        
+
+
+entities:
+  - entity: input_boolean.heating_boost
+  - entity: sensor.end_time
+  - entity: input_select.heating_room
+  - entity: input_number.hour_select
+title: Boost
+type: entities
